@@ -9,7 +9,10 @@
                   "40": [0, 1]  // down
                 };
     this.dir = this.dirs["39"];
-    this.segments = [[2,2],[2,3],[2,4]]
+    this.segments = [ new Coord(2,2),
+                      new Coord(1,2),
+                      new Coord(0,2)
+                    ];
   }
 
   Snake.prototype.move = function (grow) {
@@ -34,4 +37,48 @@
     return new Coord(coord1.posX + dir[0], coord1.posY + dir[1] );
   }
 
+  var Board = SnakeGame.Board = function() {
+    this.snake = new Snake();
+    this.grid = Board.buildBoard(20);
+  }
+
+  Board.buildBoard = function (dim) {
+    var array = [];
+
+    for ( var i = 0; i < dim; i++ ) {
+      array.push([]);
+      for ( var j = 0; j < dim; j++ ) {
+        array[i].push("*");
+      }
+    }
+
+    return array;
+  }
+
+  Board.prototype.render = function () {
+    var snake = this.snake;
+    var grid = this.grid;
+    var boardString = '';
+    this.grid.forEach(function(row, rowIndex){
+      row.forEach(function(square, squareIndex){
+        var isSnake = false;
+        snake.segments.forEach(function(coord){
+          if (coord.posX === squareIndex && coord.posY === rowIndex) {
+            isSnake = true;
+          }
+        })
+        boardString += isSnake ? 'S' : '.';
+      boardString += ' ';
+      })
+      boardString += '\n';
+
+    })
+
+    console.log(boardString);
+  }
+
 })(this);
+
+
+
+
