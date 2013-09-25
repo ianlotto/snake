@@ -9,7 +9,10 @@
                   "40": [0, 1]  // down
                 };
     this.dir = this.dirs["39"];
-    this.segments = [ new Coord(2,2),
+    this.segments = [ new Coord(2,5),
+                      new Coord(2,4),
+                      new Coord(2,3),
+                      new Coord(2,2),
                       new Coord(1,2),
                       new Coord(0,2)
                     ];
@@ -28,6 +31,21 @@
   Snake.prototype.turn = function (keyCode) {
     this.dir = this.dirs[keyCode]
   }
+
+  Snake.prototype.collides = function () {
+    var head = this.segments[0];
+    var collided = false;
+
+    this.segments.slice(1).forEach(function(coord){
+      //console.log(head);
+      //console.log(coord);
+      if (head.posX === coord.posX && head.posY === coord.posY) {
+        collided = true
+      }
+    });
+    return collided;
+  }
+
 
   var Coord = SnakeGame.Coord = function(posX, posY) {
     this.posX = posX;
@@ -81,12 +99,22 @@
   Board.prototype.animate = function () {
     var board = this;
 
-    setInterval(function() {
+    var intervalId = setInterval(function() {
+      board.snake.move();
+
+      if (board.snake.collides()){
+        console.log('You lost!');
+
+        board.endGame(intervalId);
+      }
       board.render();
-      board.snake.move()
 
-    }, 500)
+    }, 1000)
 
+  }
+
+  Board.prototype.endGame = function(intervalId){
+    clearInterval(intervalId);
   }
 
 })(this);
@@ -96,10 +124,11 @@ $(function(){
   board.animate();
 
   $(window).on("keydown", function(event){
-    var key = event.which;
+    var key = event.which.toString();
     var snake = board.snake;
-
-    snake.dir = snake.dirs[""+key];
+    if (snake.dirs[key]) {
+      snake.turn(key);
+    }
   });
 
 });
