@@ -17,6 +17,7 @@
 
   Snake.prototype.move = function (grow) {
     var newHeadPos = SnakeGame.Coord.plus(this.segments[0], this.dir);
+
     this.segments.unshift( newHeadPos );
     if (!grow) {
       this.segments.pop();
@@ -37,9 +38,9 @@
     return new Coord(coord1.posX + dir[0], coord1.posY + dir[1] );
   }
 
-  var Board = SnakeGame.Board = function() {
+  var Board = SnakeGame.Board = function(dim) {
     this.snake = new Snake();
-    this.grid = Board.buildBoard(20);
+    this.grid = Board.buildBoard(dim);
   }
 
   Board.buildBoard = function (dim) {
@@ -77,7 +78,35 @@
     console.log(boardString);
   }
 
+  Board.prototype.animate = function () {
+    var board = this;
+
+    setInterval(function() {
+      board.render();
+      board.snake.move()
+
+    }, 500)
+
+  }
+
 })(this);
+
+$(function(){
+  var board = new SnakeGame.Board(20);
+  board.animate();
+
+  $(window).on("keydown", function(event){
+    var key = event.which;
+    var snake = board.snake;
+
+    snake.dir = snake.dirs[""+key];
+  });
+
+});
+
+
+
+
 
 
 
