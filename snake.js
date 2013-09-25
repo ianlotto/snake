@@ -86,7 +86,6 @@
   }
 
   Board.prototype.eatApple = function () {
-    console.log("here!");
     var head = this.snake.segments[0];
     var headPos = this.grid[head.posY][head.posX];
     if (headPos === 'a') {
@@ -98,4 +97,3 @@
   }
 
 })(this);
-

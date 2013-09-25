@@ -37,8 +37,10 @@
       }
 
       view.render();
-
-    }, 500)
+      if (Math.random() < 0.06) {
+        board.addApple();
+      }
+    }, 100)
 
   }
 
@@ -50,6 +52,7 @@
     var snake = this.board.snake;
     var grid = this.board.grid;
     var boardString = '';
+
     grid.forEach(function(row, rowIndex){
       row.forEach(function(square, squareIndex){
         var isSnake = false;
@@ -58,23 +61,24 @@
             isSnake = true;
           }
         })
-        boardString += isSnake ? 'S' : square;
-      boardString += ' ';
+        if (isSnake) {
+          boardString += '<div class="snake"></div>';
+        }
+        else if ( square === 'a') {
+          boardString += '<div class="apple"></div>';
+        }
+        else {
+          boardString += '<div></div>'
+        }
       })
-      boardString += "<br>";
 
     })
+
     this.$container.html(boardString);
-    // console.log(boardString);
   }
-
-
-
 })(this);
 
 $(function(){
   var view = new SnakeGame.View('#container');
   view.start();
-
-
 });
