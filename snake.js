@@ -20,7 +20,7 @@
   }
 
   Snake.prototype.move = function () {
-    var newHeadPos = SnakeGame.Coord.plus(this.segments[0], this.dir);
+    var newHeadPos = SnakeGame.Coord.plus(this.segments[0], this.dir, this.board.grid);
 
     this.segments.unshift( newHeadPos );
 
@@ -54,8 +54,22 @@
     this.posY = posY;
   }
 
-  Coord.plus = function (coord1, dir) {
-    return new Coord(coord1.posX + dir[0], coord1.posY + dir[1] );
+  Coord.plus = function (coord1, dir, grid) {
+	var newPos;
+	
+	if ( coord1.posX + dir[0] >= grid.length ) {
+	  newPos = [0, coord1.posY + dir[1]];	
+	} else if( coord1.posX + dir[0] < 0 ) {
+	  newPos = [grid.length - 1, coord1.posY + dir[1]];
+	} else if ( coord1.posY + dir[1] >= grid.length ) {
+	  newPos = [coord1.posX + dir[0], 0];
+	} else if ( coord1.posY + dir[1] < 0 ) {
+	  newPos = [coord1.posX + dir[0], grid.length - 1];
+	} else {
+	  newPos = [coord1.posX + dir[0], coord1.posY + dir[1]];
+	}
+	 
+    return new Coord(newPos[0], newPos[1]);
   }
 
   var Board = SnakeGame.Board = function(dim) {
