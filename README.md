@@ -1,7 +1,7 @@
 Snake
 =====
 
-The perennial classic, Snake.
+The perennial classic, [Snake](http://en.wikipedia.org/wiki/Snake_(video_game\)).
 
 You know what to do: 
 - use the arrow keys to change directions.
@@ -9,4 +9,4 @@ You know what to do:
 - play for as long as you can. 
 
 Uses jQuery to render the view on top of the autonomous game logic.
-The board is represented by a grid of <div> elements, styled according to the object that is currently occupying them.
+The board is represented by a grid of \<div\> elements, styled according to the object that is currently occupying them.
